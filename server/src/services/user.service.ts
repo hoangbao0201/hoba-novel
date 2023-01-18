@@ -1,4 +1,6 @@
+require("dotenv").config();
 import { User } from "../entities/User";
+import jwt from "jsonwebtoken";
 // import redisClient from "../utils/connectRedis";
 
 export const createUser = async (input: Partial<User>) => {
@@ -24,18 +26,24 @@ export const findUser = async (query: Object) => {
     return await User.findOneBy(query);
 };
 
-// export const signTokens = async (user: User) => {
-//     // 1. Create Session
-//     redisClient.set(user.id, JSON.stringify(user));
+export const signTokens = async (user: User) => {
+    // 1. Create Session
+    // redisClient.set(user.id, JSON.stringify(user), {
+    //     EX: config.get<number>("redisCacheExpiresIn") * 60,
+    // });
 
-//     // 2. Create Access and Refresh tokens
-//     const access_token = signJwt({ sub: user.id }, "accessTokenPrivateKey", {
-//         expiresIn: `${config.get<number>("accessTokenExpiresIn")}m`,
-//     });
+    // 2. Create Access and Refresh tokens
+    const accessToken = jwt.sign(
+        { userId: user.id },
+        process.env.SECRET_TOKEN as string,
+        { expiresIn: "15m" }
+    );
 
-//     const refresh_token = signJwt({ sub: user.id }, "refreshTokenPrivateKey", {
-//         expiresIn: `${config.get<number>("refreshTokenExpiresIn")}m`,
-//     });
+    const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.SECRET_TOKEN as string,
+        { expiresIn: "7d" }
+    );
 
-//     return { access_token, refresh_token };
-// };  
+    return { accessToken, refreshToken };
+};

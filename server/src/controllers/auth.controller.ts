@@ -1,7 +1,25 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import argon2 from "argon2";
-import { createUser, getUser } from "../services/user.service";
+import { createUser, getUser, signTokens } from "../services/user.service";
 
+const cookiesOptions: CookieOptions = {
+    httpOnly: true,
+    sameSite: "lax",
+};
+
+if (process.env.NODE_ENV === "production") cookiesOptions.secure = true;
+
+const accessTokenCookieOptions: CookieOptions = {
+    ...cookiesOptions,
+    expires: new Date(Date.now() + 15 * 60 * 1000),
+    maxAge: 7 * 60 * 1000,
+};
+
+const refreshTokenCookieOptions: CookieOptions = {
+    ...cookiesOptions,
+    expires: new Date(Date.now() + 15 * 60 * 1000),
+    maxAge: 7 * 60 * 1000,
+};
 
 // Register User
 export const registerUser = async (req: Request, res: Response) => {
@@ -55,10 +73,24 @@ export const loginUser = async (req: Request, res: Response) => {
             };
         }
 
+        // Sign access and refresh token
+        const { accessToken, refreshToken } = await signTokens(exitingUser);
+        console.log("ACCESS TOKEN: ", accessToken);
+        console.log("REFRESH TOKEN: ", refreshToken);
+
+        // 5. Add Cookies
+        res.cookie("access_token", accessToken, accessTokenCookieOptions);
+        res.cookie("refresh_token", refreshToken, refreshTokenCookieOptions);
+        res.cookie("logged_in", true, {
+            ...accessTokenCookieOptions,
+            httpOnly: false,
+        });
+
         return res.json({
             code: 200,
             message: "Login successful",
             user: exitingUser,
+            accessToken: accessToken
         });
     } catch (error) {
         return {

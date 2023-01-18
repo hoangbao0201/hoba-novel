@@ -1,5 +1,13 @@
 
 
+
+client/node_modules
+client/.env
+
+
+
+
+
 server/node_modules
 server/dist
 server/.env
