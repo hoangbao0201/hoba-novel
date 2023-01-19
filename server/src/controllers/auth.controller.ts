@@ -37,12 +37,14 @@ export const registerUser = async (req: Request, res: Response) => {
 
         return res.json({
             code: 200,
+            success: true,
             message: "Register successful",
             user: newUser,
         });
     } catch (error) {
         return {
             code: 500,
+            success: false,
             message: `Internal server error ${error}`,
         };
     }
@@ -58,6 +60,7 @@ export const loginUser = async (req: Request, res: Response) => {
         if (!exitingUser) {
             return res.json({
                 code: 400,
+                success: false,
                 message: "Username or email incorrect",
             });
         }
@@ -69,6 +72,7 @@ export const loginUser = async (req: Request, res: Response) => {
         if (!passwordValid) {
             return {
                 code: 400,
+                success: false,
                 message: "Username or email incorrect",
             };
         }
@@ -88,13 +92,15 @@ export const loginUser = async (req: Request, res: Response) => {
 
         return res.json({
             code: 200,
+            success: true,
             message: "Login successful",
             user: exitingUser,
-            accessToken: accessToken
+            accessToken: accessToken,
         });
     } catch (error) {
         return {
             code: 500,
+            success: false,
             message: `Internal server error ${error}`,
         };
     }

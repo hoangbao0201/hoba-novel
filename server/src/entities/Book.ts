@@ -11,7 +11,7 @@ import {
 import { User } from "./User";
 
 @Entity()
-export class Post extends BaseEntity {
+export class Book extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -25,7 +25,7 @@ export class Post extends BaseEntity {
     thumbnail: string;
 
     // User
-    @ManyToOne(() => User, (user) => user.posts)
+    @ManyToOne(() => User, (user) => user.Books)
     @JoinColumn()
     user!: User;
 

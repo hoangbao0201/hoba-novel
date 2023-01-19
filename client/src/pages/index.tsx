@@ -1,7 +1,11 @@
 import Head from "next/head";
+
 import GlobalStyles from "@/components/GlobalStyles";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+    const { currentUser } = useSelector((state: any) => state.user);
+
     return (
         <>
             <Head>
@@ -17,7 +21,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <GlobalStyles>Home</GlobalStyles>
+                <GlobalStyles>
+                    <p>{JSON.stringify(currentUser)}</p>
+                </GlobalStyles>
             </main>
         </>
     );

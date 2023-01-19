@@ -8,6 +8,9 @@ const cx = classNames.bind(styles);
 import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import BreadcrumbLayout from "../Layouts/BreadcrumbLayout";
 import { iconFacebook, iconGithub, iconGoogle } from "public/icons";
+import axios from "axios";
+import { loginStart, loginUser } from "@/redux/userSlice";
+import { useDispatch } from "react-redux";
 
 export interface FormLoginProps {}
 
@@ -16,6 +19,7 @@ const FormLogin = () => {
         accout: "",
         password: "",
     });
+    const dispatch = useDispatch();
 
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
@@ -34,11 +38,17 @@ const FormLogin = () => {
     const handleSubmitFormLoginUser = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // if (response.data?.login.errors) {
-        //     console.log("ERROR: ", response.data?.login.errors);
-        // } else {
-        //     router.push("/");
-        // }
+        dispatch(loginStart());
+
+        const resLoginUser = await axios.post("/api/auth/login", dataForm)
+
+        if(resLoginUser.data.success) {
+            dispatch(loginUser(resLoginUser.data.user))
+
+            router.push("/")
+        }
+
+        // console.log(resLoginUser.data)
     };
 
     return (

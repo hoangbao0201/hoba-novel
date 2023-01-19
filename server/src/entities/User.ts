@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
-import { Post } from "./Post";
+import { Book } from "./Book";
 
 @Entity()
 export class User extends BaseEntity {
@@ -26,9 +26,9 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
-    // Posts
-    @OneToMany(() => Post, (post) => post.user)
-    posts: Post[];
+    // Books
+    @OneToMany(() => Book, (book) => book.user)
+    Books: Book[];
 
     @CreateDateColumn()
     createAt: Date;
