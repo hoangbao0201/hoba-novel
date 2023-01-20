@@ -25,7 +25,7 @@ export class Book extends BaseEntity {
     thumbnail: string;
 
     // User
-    @ManyToOne(() => User, (user) => user.Books)
+    @ManyToOne(() => User, (user) => user.books)
     @JoinColumn()
     user!: User;
 

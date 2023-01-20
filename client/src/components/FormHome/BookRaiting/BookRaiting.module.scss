@@ -1,0 +1,338 @@
+.container {
+    
+}
+
+.title {
+    margin-left: 15px;
+    padding: 15px 0px;
+}
+
+// Box
+
+.list-box {
+    display: flex;
+    flex-wrap: nowrap;
+    transition: all 0.2 ease-in-out;
+}
+
+.grid-box {
+    width: calc(100%/3);
+    padding: 0px 15px;
+}
+
+.box {
+    padding: 16px 24px 8px 24px;
+    background-color: #ffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px 0 #d7d4ce;
+
+    .box-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        position: relative;
+
+        & + .box-row {
+            .detail-book {
+                border-top: 1px solid #eee;
+            }
+        }
+    }
+}
+
+.box-title {
+    font-weight: 550;
+    margin-bottom: 20px;
+}
+
+.list-top-raiting {
+    display: flex;
+    flex-direction: column;
+}
+
+// Detail book
+
+.detail-book {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 35px;
+
+    &.line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .name-book {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+        .view-book {
+            margin-bottom: 0px;
+        }
+        .author-book {
+            margin-bottom: 0px;
+        }
+        .category-book {
+            margin-bottom: 0px;
+        }
+    }
+
+    .name-book {
+        margin-bottom: 5px;
+    }
+    .view-book {
+        margin-bottom: 10px;
+    }
+    .author-book {
+        margin-bottom: 5px;
+    }
+    .category-book {
+        margin-bottom: 10px;
+    }
+}
+
+.icon-rank {
+    font-weight: 600;
+    position: absolute;
+
+    svg {
+        display: block;
+    }
+    &.topOne {
+        top: 0px;
+        transform: translateY(50%);
+    }
+    &>span {
+        margin-left: 7px;
+    }
+}
+
+.name-book {
+    font-size: 16px;
+    font-weight: 600;
+    padding-right: 15px;
+
+    .name-book-link {
+        cursor: pointer;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+    }
+}
+
+.view-book {
+    font-size: 14px;
+    color: #088860;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 13px;
+        fill: #088860;
+        display: block;
+        margin-left: 5px;
+    }
+}
+
+.author-book {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #666;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 16px;
+        fill: #666;
+        display: block;
+        margin-right: 5px;
+        margin-left: -2px;
+    }
+}
+
+.category-book {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #666;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 13px;
+        fill: #666;
+        display: block;
+        margin-right: 5px;
+    }
+}
+
+// book
+
+.grid-book {
+    padding: 16px 16px 16px 0px;
+    position: relative;
+}
+
+.book {
+    transform: perspective(70px) rotateY(-8deg);
+
+    &:hover .book-link {
+        opacity: 0.8;
+    }
+}
+
+.book-link {
+    z-index: 10;
+    background-color: transparent;
+    outline: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.thumbnail-book {
+    width: 70px;
+    height: 105px;    
+    vertical-align: middle;
+}
+
+.book-cover-shadow {
+    top: 3px;
+    z-index: 2;
+    right: -6px;
+    width: 6px;
+    height: 95%;
+    position: absolute;
+    box-shadow: inset 0px 0px 5px #333;
+    transform: perspective(6px) rotateY(3deg);
+}
+
+// Tablist
+
+.tablist {
+    width: 100%;
+    position: relative;
+    border-top: 1px solid #eeee;
+    background-color: #eeee;
+
+    display: none;
+    align-items: center;
+    
+    .devider {
+        // width: calc(100%/3);
+        // height: 1px;
+        // bottom: 0px;
+        // padding: 0px 5px;
+        // position: absolute;
+        // background-color: red;
+        // transition: all 0.2s ease;
+    }
+    &.tab1 {
+        .item:nth-child(1) {
+            background-color: #ffff;
+        }
+        .devider {
+            transform: translateX(calc(100%*0));
+        }
+    }
+    &.tab2 {
+        .item:nth-child(2) {
+            background-color: #ffff;
+        }
+        .devider {
+            transform: translateX(calc(100%*1));
+        }
+    }
+    &.tab3 {
+        .item:nth-child(3) {
+            background-color: #ffff;
+        }
+        .devider {
+            transform: translateX(calc(100%*2));
+        }
+    }
+}
+
+.tablist {
+
+    .item {
+        font-weight: 600;
+        padding: 14px 0px;
+        text-align: center;
+        width: calc(100%/3);
+        -webkit-user-select: none;
+        cursor: pointer;
+        // transition: all 0.2s ease;
+
+        &:hover {
+            background-color: rgb(246, 246, 246);
+        }
+    }
+    .item + .item {
+        border-left: 1px solid #eeee;
+    }
+    .item.active {
+        background-color: #eeee;
+    }
+}
+
+
+
+
+
+
+// Response
+
+@media (max-width: 1200px) {
+    .container {
+        background-color: #ffff;
+    }
+    .tablist {
+        display: flex !important;
+    }
+    .grid-box {
+        display: none;
+    }
+    .list-box.tab1 .grid-box:nth-child(1) {
+        width: 100% !important;
+        padding: 0px;
+        border-radius: 0px !important;
+        display: block !important;
+        .box {
+            box-shadow: none !important;
+        }
+    }
+    .list-box.tab2 .grid-box:nth-child(2) {
+        width: 100% !important;
+        padding: 0px;
+        border-radius: 0px !important;
+        display: block !important;
+        .box {
+            box-shadow: none !important;
+        }
+    }
+    .list-box.tab3 .grid-box:nth-child(3) {
+        width: 100% !important;
+        padding: 0px;
+        border-radius: 0px !important;
+        display: block !important;
+        
+        .box {
+            box-shadow: none !important;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .tablist {
+        .item {
+            font-size: 15px;
+        }
+    }
+}

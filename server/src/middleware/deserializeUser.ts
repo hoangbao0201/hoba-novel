@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { findUserById } from "../services/user.service";
 
-export const deserializeUser = (
+export const deserializeUser = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -11,18 +12,41 @@ export const deserializeUser = (
         const token = authHeader && authHeader.split(" ")[1];
 
         if (!token) {
-            // return next(new AppError(401, `Invalid token or session has expired`));
-            res.json({
+            res.status(400).json({
                 code: 400,
                 success: false,
-                message: "Access token not found"
-            })
+                message: "Access token not found",
+            });
         }
 
-        const decodes = jwt.verify(token as string, process.env.SECRET_TOKEN as string);
+        await jwt.verify(
+            token as string,
+            process.env.SECRET_TOKEN as string,
+            async (error: any, user : any ) => {
+                if (error) {
+                    res.json({
+                        code: 400,
+                        success: false,
+                        error: "decodes",
+                        message: "Invalid token or user doesn't exist",
+                    });
+                    return;
+                }
 
-        res.locals.userId = decodes;
-        next();
+                const exitingUser = await findUserById(user.userId);
+                if(!exitingUser) {
+                    res.json({
+                        code: 400,
+                        success: false,
+                        message: "User not found"
+                    })
+                }
+
+                res.locals.user = exitingUser;
+
+                next();
+            }
+        );
     } catch (error) {
         next(error);
     }

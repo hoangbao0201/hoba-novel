@@ -3,6 +3,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -28,7 +29,7 @@ export class User extends BaseEntity {
 
     // Books
     @OneToMany(() => Book, (book) => book.user)
-    Books: Book[];
+    books: Book[];
 
     @CreateDateColumn()
     createAt: Date;

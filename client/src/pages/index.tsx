@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import GlobalStyles from "@/components/GlobalStyles";
 import { useSelector } from "react-redux";
+import FormHome from "@/components/FormHome";
 
 export default function Home() {
     const { currentUser } = useSelector((state: any) => state.user);
@@ -22,7 +23,7 @@ export default function Home() {
             </Head>
             <main>
                 <GlobalStyles>
-                    <p>{JSON.stringify(currentUser)}</p>
+                    <FormHome />
                 </GlobalStyles>
             </main>
         </>

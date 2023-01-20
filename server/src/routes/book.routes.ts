@@ -6,6 +6,6 @@ const router = express.Router();
 
 
 // router.use()
-router.post("/create", deserializeUser, createBook);
+router.post("/create", [deserializeUser], createBook);
 
 export default router;
