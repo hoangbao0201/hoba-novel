@@ -1,18 +1,19 @@
+import Link from "next/link";
+import { useRef, useState } from "react";
+
 import classNames from "classnames/bind";
 import styles from "./Navbar.module.scss";
 const cx = classNames.bind(styles);
-
-import Link from "next/link";
-// import { signOut, useSession } from "next-auth/react";
-import { useRef, useState } from "react";
 
 import OverlayLayout from "../../../Layouts/OverlayLayout";
 import { iconBars, iconLogin, iconRegister } from "../../../../../public/icons";
 import useClickOutSide from "../../../../hooks/useClickOutSide";
 
-export interface NavbarProps {}
+export interface NavbarProps {
+    tab?: string
+}
+
 const Navbar = () => {
-    // const { data: session } = useSession();
     const session = false
     const navbarRef = useRef<HTMLDivElement>(null);
     const [isNavbar, setIsNavbar] = useState(false);
@@ -70,7 +71,7 @@ const Navbar = () => {
                                     {iconRegister}hoangbao0201
                                 </div>
                             </Link>
-                            <Link href="/book/create">
+                            <Link href="/creator/book" target="_blank">
                                 <div className={cx("navbar-item")}>
                                     {iconRegister}Create Book
                                 </div>

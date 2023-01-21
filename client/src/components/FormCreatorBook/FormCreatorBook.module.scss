@@ -1,0 +1,130 @@
+.wrapper {
+    width: 100%;
+    // height: 100vh;
+    // top: 0px;
+    // right: 0px;
+    // left: 0px;
+    // bottom: 0px;
+    overflow-y: scroll;
+
+    transition: 0.2s all ease;
+}
+
+.container {
+    // margin-top: 20px;
+    // margin-bottom: 20px;
+    // background-color: #ffff;
+}
+
+// header
+
+.header {
+    top: 0px;
+    right: 0px;
+    left: 260px;
+    z-index: 1;
+    border-bottom: 1px solid #ebe9f1;
+    position: fixed;
+
+    .container {
+        padding: 15px 30px;
+        transition: 0.2s all ease;
+    }
+}
+
+// Content
+
+.content {
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    // bottom: 50px;
+    height: 100%;
+    margin-left: 260px;
+    padding: 70px 30px 65px 30px;
+    position: fixed;
+
+    transition: 0.2s all ease;
+}
+
+.content-header {
+    margin-bottom: 20px;
+
+    .title {
+        color: #6e6b7b;
+        font-size: 20px;
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+    .description {
+        color: #6e6b7b;
+        font-size: 15px;
+        font-weight: 400;
+    }
+}
+
+.content-form {
+    height: 100%;
+}
+
+// Footer
+
+.footer {
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: fixed;
+    margin-left: 260px;
+    padding: 15px 30px;
+    border-top: 1px solid #ebe9f1;
+}
+
+.button-show {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+    background-color: transparent;
+
+    opacity: 0;
+    visibility: hidden;
+
+    -webkit-user-select: none;
+
+    svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+    }
+    &:hover {
+        background-color: var(--bg-hover-color);
+    }
+}
+
+
+// Response
+
+@media (max-width: 1200px) {
+    .content {
+        margin-left: 0px !important;
+    }
+    .header {
+        left: 0px !important;
+    }
+    .footer {
+        margin-left: 0px !important;
+    }
+    .button-show {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .content {
+        padding: 70px 15px 65px 15px;
+    }
+}

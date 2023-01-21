@@ -1,0 +1,37 @@
+.wrapper {
+    bottom: 0px;
+    height: 100%;
+    margin-bottom: 65px;
+}
+
+.form-editor {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #6e6b7b;
+
+    display: block;
+    outline: none;
+    font-family: inherit;
+    border-radius: 6px;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d8d6de;
+
+    &:focus {
+        border-color: #7367f0;
+    }
+}
+
+// .customize-quill {
+//     height: 500px;
+//     font-family: inherit !important;
+//     background-color: #ffff;
+// }
+
+.number-words {
+    margin: 15px 0px;
+    color: #b9b9c3;
+}

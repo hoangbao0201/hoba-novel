@@ -151,3 +151,17 @@ button {
 .dev-col-12 {
     width: 100%;
 }
+
+
+// Quill JS
+
+.customize-quill-new-drafts {
+    height: 100%;
+    max-height: 500px;
+    
+    .ql-container {
+        overflow: hidden;
+        border-radius: 6px;
+        background-color: #ffff;
+    }
+}
