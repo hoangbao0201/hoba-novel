@@ -9,6 +9,8 @@ const CreatorBook = () => {
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
 
+    console.log(router.pathname)
+
     return (
         <>
             <Head>
@@ -21,7 +23,7 @@ const CreatorBook = () => {
             </Head>
 
             <main>
-                <FormCreatorBook />
+                <FormCreatorBook tab={router.query.tab} route={router.basePath}/>
             </main>
         </>
     );

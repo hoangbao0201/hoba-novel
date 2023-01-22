@@ -20,6 +20,7 @@ const modules = {
 };
 
 const ContentFormDraftsNew = () => {
+    let titleBook;
     const [textContent, setTextContent] = useState<string>("");
     const [numberWords, setNumberWords] = useState<number>(0)
 
@@ -30,6 +31,11 @@ const ContentFormDraftsNew = () => {
     useEffect(() => {
         setNumberWords(textContent.split(" ").length - 1)
     }, [textContent])
+
+    if(textContent.length > 0 && textContent.split("<p>").length == 2) {
+        titleBook = textContent.split("p>")[1].split("</")[0]
+        // console.log(textContent.split("<p>").length)
+    }
 
     return (
         <div className={cx("wrapper")}>
