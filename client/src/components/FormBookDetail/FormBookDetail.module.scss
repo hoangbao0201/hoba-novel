@@ -1,0 +1,16 @@
+
+
+.head {
+    display: flex;
+}
+
+.thumbnail {
+
+    .image {
+        width: 210px;
+        height: 300px;
+        object-fit: cover;
+        display: none;
+        display: block;
+    }
+}

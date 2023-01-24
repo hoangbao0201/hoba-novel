@@ -5,23 +5,32 @@ import classNames from "classnames/bind";
 import styles from "./Navbar.module.scss";
 const cx = classNames.bind(styles);
 
-import OverlayLayout from "../../../Layouts/OverlayLayout";
-import { iconBars, iconLogin, iconRegister } from "../../../../../public/icons";
-import useClickOutSide from "../../../../hooks/useClickOutSide";
+// import { useDispatch, useSelector } from "react-redux";
+// import { logoutUser } from "@/redux/userSlice";
+import useClickOutSide from "@/hooks/useClickOutSide";
+import { iconBars, iconLogin, iconRegister } from "public/icons";
+import OverlayLayout from "../../OverlayLayout";
 
 export interface NavbarProps {
     tab?: string
 }
 
 const Navbar = () => {
-    const session = false
     const navbarRef = useRef<HTMLDivElement>(null);
     const [isNavbar, setIsNavbar] = useState(false);
+    // const dispatch = useDispatch();
+    // const { isAuthenticated } = useSelector((state : any) => state.user);
 
     const handleCloseNavbar = () => {
+        // console.log(123)
         setIsNavbar(false);
     };
     useClickOutSide(navbarRef, handleCloseNavbar);
+
+    const eventLogoutUser = (e : any) => {
+        e.preventDefault()
+        // dispatch(logoutUser());
+    }
 
     return (
         <>
@@ -40,8 +49,8 @@ const Navbar = () => {
                         <div className={cx("header")}>Navbar</div>
 
                         <div className={cx("content")}>
-                            {session ? (
-                                <Link href="/auth/login">
+                            {false ? (
+                                <Link href="/" onClick={eventLogoutUser}>
                                     <div className={cx("navbar-item")} >
                                         {iconLogin}Đăng xuất
                                     </div>

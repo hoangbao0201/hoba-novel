@@ -1,17 +1,23 @@
 require("dotenv").config();
 import express from "express";
 import "reflect-metadata";
-import { AppDataSource } from "./utils/data-source";
+import cookieParser from "cookie-parser";
 
+import { AppDataSource } from "./utils/data-source";
 import authRouter from "./routes/auth.routes";
 import bookRouter from "./routes/book.routes";
+import userRouter from "./routes/user.routes";
 
 import cors from "cors";
 
 const main = async () => {
+
+    
     const app = express();
     const PORT = 4000;
 
+
+    app.use(cookieParser())
     app.use(
         cors({
             origin: "http://localhost:3000",
@@ -26,7 +32,8 @@ const main = async () => {
 
     // Routes
     app.use("/api/auth", authRouter);
-    app.use("/api/book", bookRouter);
+    app.use("/api/books", bookRouter);
+    app.use("/api/users", userRouter);
 
     app.listen(PORT, () => {
         console.log(`Server started on port ${PORT}`);

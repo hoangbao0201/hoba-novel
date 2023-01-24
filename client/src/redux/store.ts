@@ -1,8 +1,20 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
+import {
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+// import Cookies from "js-cookie";
+// import { useEffect } from "react";
+// import { PersistGate } from "redux-persist/integration/react";
 
 const persistConfig = {
     key: "root",
@@ -30,3 +42,5 @@ export const store = configureStore({
             },
         }),
 });
+
+export const persistor = persistStore(store);

@@ -9,8 +9,9 @@ import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import BreadcrumbLayout from "../Layouts/BreadcrumbLayout";
 import { iconFacebook, iconGithub, iconGoogle } from "public/icons";
 import axios from "axios";
-import { loginStart, loginUser } from "@/redux/userSlice";
-import { useDispatch } from "react-redux";
+import { loginUser } from "@/redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie"
 
 export interface FormLoginProps {}
 
@@ -20,6 +21,7 @@ const FormLogin = () => {
         password: "",
     });
     const dispatch = useDispatch();
+    const { userLoading, isAuthenticated } = useSelector((state : any) => state.user);
 
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
@@ -38,18 +40,31 @@ const FormLogin = () => {
     const handleSubmitFormLoginUser = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(loginStart());
+        try {
+            const resLoginUser = await axios.post("/api/auth/login", dataForm);
+            
+            Cookies.set('A_token', resLoginUser.data.accessToken)
+            dispatch(loginUser(resLoginUser.data.user));
 
-        const resLoginUser = await axios.post("/api/auth/login", dataForm)
+            router.push("/");
 
-        if(resLoginUser.data.success) {
-            dispatch(loginUser(resLoginUser.data.user))
-
-            router.push("/")
+        } catch (error) {
+            console.log(error);
         }
-
-        // console.log(resLoginUser.data)
     };
+
+    // ---
+
+    if(userLoading) {
+        return <div></div>
+    }
+    else {
+        if(isAuthenticated) {
+            router.push("/");
+        }
+    }
+
+    // console.log(currentUser)
 
     return (
         <>

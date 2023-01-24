@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind'
+import { NextPage } from 'next';
 import ContentWrapper from '../Layouts/ContentWrapper';
 import BooksRaiting from './BookRaiting';
 import CardsBook from './CardsBook';
@@ -8,7 +9,7 @@ const cx = classNames.bind(styles);
 export interface FormHomeProps {
 
 }
-const FormHome = () => {
+const FormHome : NextPage = () => {
 
     return (
        <ContentWrapper>

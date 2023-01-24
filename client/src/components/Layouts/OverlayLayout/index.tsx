@@ -8,6 +8,7 @@ export interface OverlayLayoutProps {
     active: boolean | undefined;
 }
 const OverlayLayout = ({ children, active }: OverlayLayoutProps) => {
+
     return (
         <>
             <div className={cx("overlay", `${active ? "active" : ""}`)}></div>
