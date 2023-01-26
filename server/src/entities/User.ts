@@ -27,7 +27,7 @@ export class User extends BaseEntity {
     password: string;
 
     // Books
-    @OneToMany(() => Book, (book) => book.user)
+    @OneToMany(() => Book, book => book.user)
     books: Book[];
 
     @CreateDateColumn()

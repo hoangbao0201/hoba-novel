@@ -1,7 +1,6 @@
 require("dotenv").config();
 import { User } from "../entities/User";
 import jwt from "jsonwebtoken";
-// import redisClient from "../utils/connectRedis";
 
 export const createUser = async (input: Partial<User>) => {
     return await User.save(User.create(input));
@@ -19,7 +18,14 @@ export const findUserByEmail = async (email: string) => {
 };
 
 export const findUserById = async (userId: number) => {
-    return await User.findOneBy({ id: userId });
+
+    const existingUser = await User
+        .createQueryBuilder("user")
+        .where( "user.id = :id", { id: userId })
+        .getOne()
+
+    // return await User.findOneBy({ id: userId });
+    return existingUser;
 };
 
 export const findUser = async (query: Object) => {
@@ -27,12 +33,6 @@ export const findUser = async (query: Object) => {
 };
 
 export const signTokens = async (user: User) => {
-    // 1. Create Session
-    // redisClient.set(user.id, JSON.stringify(user), {
-    //     EX: config.get<number>("redisCacheExpiresIn") * 60,
-    // });
-
-    // 2. Create Access and Refresh tokens
     const accessToken = jwt.sign(
         { userId: user.id },
         process.env.SECRET_TOKEN as string,

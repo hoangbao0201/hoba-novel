@@ -12,9 +12,9 @@ const CardsBook = () => {
     return (
        <div className={cx("wrapper")}>
             <div className={cx("container")}>
-                <div className={cx('grid-image')}>
+                <Link href="/book/vua-thanh-tien-than-con-chau-cau-ta-xuat-son" className={cx('grid-image')}>
                     <img className={cx("thumbnail")} src="https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325"/>
-                </div>
+                </Link>
                 <div className={cx("detail")}>
                     <Link className={cx("title-link")} href='/book/vua-thanh-tien-than-con-chau-cau-ta-xuat-son'>
                         <h3 className={cx("title")}>Vừa thành tiên thần con cháu cầu ta xuất sơn</h3>

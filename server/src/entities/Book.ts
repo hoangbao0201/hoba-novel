@@ -18,14 +18,32 @@ export class Book extends BaseEntity {
     @Column({ unique: true })
     title: string;
 
+    @Column({ unique: true })
+    author: string
+
     @Column()
-    content: string;
+    description: string
+
+    @Column()
+    category: string
+
+    @Column()
+    personality: string
+
+    @Column()
+    scene: string
+
+    @Column()
+    classify: string
+
+    @Column()
+    viewFrame: string
 
     @Column({ default: "default-book.png", })
     thumbnail: string;
 
     // User
-    @ManyToOne(() => User, (user) => user.books)
+    @ManyToOne(() => User, user => user.books)
     @JoinColumn()
     user!: User;
 

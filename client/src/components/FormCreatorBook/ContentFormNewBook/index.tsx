@@ -1,48 +1,162 @@
-import classNames from "classnames/bind";
+import axios from "axios";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+import classNames from "classnames/bind";
 import styles from "./ContentFormNewBook.module.scss";
 const cx = classNames.bind(styles);
 
 export interface ContentFormNewBookProps {}
-const ContentFormNewBook = () => {
 
+const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
+});
+
+const modules = {
+    toolbar: null,
+};
+
+const ContentFormNewBook = () => {
+    const [imageThumbnail, setImageThumbnail] = useState("/images/thumbnail-book-default.png")
+    const [dataImageThumbnail, setDataImageThumbnail] = useState<any>("");
+    const [loadingCreateBook, setLoadingCreateBook] = useState<boolean>(false);
+    const [loadingUploadImage, setLoadingUploadImage] = useState<boolean>(false);
     const [dataForm, setDataForm] = useState({
         title: "",
+        author: "",
         description: "",
         category: "Tiên Hiệp",
         personality: "Điềm Đạm",
         scene: "Đông Phương Huyền Huyễn",
         classify: "Hệ Thống",
         viewFrame: "Góc Nhìn Nam",
-    })
+    });
 
-    const eventOnChangeValueForm = (e : any) => {
+    // Text description
+    const eventOnChangeTextContent = (value: any) => {
         setDataForm({
             ...dataForm,
-            [e.target.name]: e.target.value
-        })
+            description: value,
+        });
+    };
+
+    // Image
+    const eventOnchangeImage = async (e : any) => {
+        const fileImage = e.target.files[0];
+        setImageThumbnail(URL.createObjectURL(fileImage));
+        setDataImageThumbnail(fileImage);
     }
 
-    console.log(dataForm)
+    // Value Form
+    const eventOnChangeValueForm = (e: any) => {
+        setDataForm({
+            ...dataForm,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // Submit form
+    const eventSubmitFormCreateBookNew = async () => {
+
+        // Loading
+        setLoadingCreateBook(true);
+
+        const resCreateBook = await axios.post("/api/books/create", dataForm);
+
+        console.log(resCreateBook.data);
+
+        setLoadingCreateBook(false);
+    };
+
+    // Update image
+    const eventSubmitImage = async () => {
+
+        // Loading
+        setLoadingUploadImage(true);
+
+        const image = new FormData();
+        image.append("file", dataImageThumbnail);
+
+        const resUploadImage = await axios.post("/api/images/upload-single", image);
+
+        console.log(resUploadImage.data);
+
+        setLoadingUploadImage(false);
+    };
+
 
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 <div className={cx("form")}>
+                    <div className={cx("form-group", "grid-form-upload-image")}>
+
+                        <input
+                            id="inputUploadThumbnail"
+                            type="file"
+                            className={cx("form-input-thumbnail")}
+                            placeholder=""
+                            name="thumbnail"
+                            value={dataForm.title}
+                            onChange={eventOnchangeImage}
+                        />
+                        <label htmlFor="inputUploadThumbnail" className={cx("grid-input-image")}>
+                            <img src={imageThumbnail} className={cx("image-thumbnail")} />
+                        </label>
+
+                        <button className={cx("button-upload-image")} onClick={eventSubmitImage}>Cập nhật ảnh bìa {loadingUploadImage && " - loading..."}</button>
+
+                        <p className={cx("note-upload-image")}>
+                            Lưu ý: file ảnh không nặng quá 2MB. Đừng lo lắng nếu không tìm được ảnh bìa ưng ý, chúng tôi sẽ hỗ trợ làm giúp bạn ảnh bìa đẹp khi truyện được xuất bản
+                        </p>
+
+                    </div>
+
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Tên truyện</label>
-                        <input className={cx("form-input")} placeholder="" name="title" value={dataForm.title} onChange={eventOnChangeValueForm}/>
+                        <input
+                            className={cx("form-input")}
+                            placeholder=""
+                            name="title"
+                            value={dataForm.title}
+                            onChange={eventOnChangeValueForm}
+                        />
+                    </div>
+
+                    <div className={cx("form-group")}>
+                        <label className={cx("form-title")}>
+                            Tên tác giả (Tên người viết truyện này)
+                        </label>
+                        <input
+                            className={cx("form-input")}
+                            placeholder=""
+                            name="author"
+                            value={dataForm.author}
+                            onChange={eventOnChangeValueForm}
+                        />
                     </div>
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Giới thiệu</label>
-                        <textarea className={cx("form-text")} placeholder="" name="description" value={dataForm.description} onChange={eventOnChangeValueForm}/>
+                        {/* <textarea className={cx("form-text")} placeholder="" name="description" value={dataForm.description} onChange={eventOnChangeValueForm}/> */}
+
+                        <QuillNoSSRWrapper
+                            modules={modules}
+                            placeholder="Nếu để tên chương nằm ở dòng đầu tiên, hệ thống sẽ tự tách tên chương cho bạn"
+                            className="customize-quill-new-book"
+                            onChange={eventOnChangeTextContent}
+                        />
                     </div>
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Thể loại</label>
 
-                        <select className={cx("form-input")} name="category" value={dataForm.category} onChange={eventOnChangeValueForm}>
+                        <select
+                            className={cx("form-input")}
+                            name="category"
+                            value={dataForm.category}
+                            onChange={eventOnChangeValueForm}
+                        >
                             <option value="Tiên Hiệp">Tiên Hiệp</option>
                             <option value="Huyền Huyễn">Huyền Huyễn</option>
                             <option value="Khoa Huyễn">Khoa Huyễn</option>
@@ -61,7 +175,12 @@ const ContentFormNewBook = () => {
                         <label className={cx("form-title")}>
                             Tính cách nhân vật chính
                         </label>
-                        <select className={cx("form-input")} name="personality" value={dataForm.personality} onChange={eventOnChangeValueForm}>
+                        <select
+                            className={cx("form-input")}
+                            name="personality"
+                            value={dataForm.personality}
+                            onChange={eventOnChangeValueForm}
+                        >
                             <option value="Điềm Đạm">Điềm Đạm</option>
                             <option value="Nhiệt Huyết">Nhiệt Huyết</option>
                             <option value="Vô Sỉ">Vô Sỉ</option>
@@ -79,61 +198,163 @@ const ContentFormNewBook = () => {
                         <label className={cx("form-title")}>
                             Bối cảnh thế giới
                         </label>
-                        <select className={cx("form-input")} name="scene" value={dataForm.scene} onChange={eventOnChangeValueForm}>
-                            <option value="Đông Phương Huyền Huyễn">Đông Phương Huyền Huyễn</option>
-                            <option value="Dị Thế Đại Lục">Dị Thế Đại Lục</option>
-                            <option value="Vương Triều Tranh Bá">Vương Triều Tranh Bá</option>
-                            <option value="Cao Võ Thế Giới">Cao Võ Thế Giới</option>
-                            <option value="Tây Phương Kỳ Huyễn">Tây Phương Kỳ Huyễn</option>
-                            <option value="Hiện Đại Ma Pháp">Hiện Đại Ma Pháp</option>
-                            <option value="Hắc Ám Huyễn Tưởng">Hắc Ám Huyễn Tưởng</option>
-                            <option value="Lịch Sử Thần Thoại">Lịch Sử Thần Thoại</option>
-                            <option value="Võ Hiệp Huyễn Tưởng">Võ Hiệp Huyễn Tưởng</option>
-                            <option value="Cổ Võ Tương Lai">Cổ Võ Tương Lai</option>
-                            <option value="Tu Chân Văn Minh">Tu Chân Văn Minh</option>
-                            <option value="Huyễn Tưởng Tu Tiên">Huyễn Tưởng Tu Tiên</option>
-                            <option value="Hiện Đại Tu Chân">Hiện Đại Tu Chân</option>
-                            <option value="Thần Thoại Tu Chân">Thần Thoại Tu Chân</option>
-                            <option value="Cổ Điển Tiên Hiệp">Cổ Điển Tiên Hiệp</option>
-                            <option value="Viễn Cổ Hồng Hoang">Viễn Cổ Hồng Hoang</option>
-                            <option value="Đô Thị Sinh Hoạt">Đô Thị Sinh Hoạt</option>
-                            <option value="Đô Thị Dị Năng">Đô Thị Dị Năng</option>
-                            <option value="Thanh Xuân Vườn Trường">Thanh Xuân Vườn Trường</option>
-                            <option value="Ngu Nhạc Minh Tinh">Ngu Nhạc Minh Tinh</option>
-                            <option value="Thương Chiến Chức Tràng">Thương Chiến Chức Tràng</option>
-                            <option value="Giá Không Lịch Sử">Giá Không Lịch Sử</option>
-                            <option value="Lịch Sử Quân Sự">Lịch Sử Quân Sự</option>
-                            <option value="Dân Gian Truyền Thuyết">Dân Gian Truyền Thuyết</option>
-                            <option value="Lịch Sử Quan Trường">Lịch Sử Quan Trường</option>
-                            <option value="Hư Nghĩ Võng Du">Hư Nghĩ Võng Du</option>
+                        <select
+                            className={cx("form-input")}
+                            name="scene"
+                            value={dataForm.scene}
+                            onChange={eventOnChangeValueForm}
+                        >
+                            <option value="Đông Phương Huyền Huyễn">
+                                Đông Phương Huyền Huyễn
+                            </option>
+                            <option value="Dị Thế Đại Lục">
+                                Dị Thế Đại Lục
+                            </option>
+                            <option value="Vương Triều Tranh Bá">
+                                Vương Triều Tranh Bá
+                            </option>
+                            <option value="Cao Võ Thế Giới">
+                                Cao Võ Thế Giới
+                            </option>
+                            <option value="Tây Phương Kỳ Huyễn">
+                                Tây Phương Kỳ Huyễn
+                            </option>
+                            <option value="Hiện Đại Ma Pháp">
+                                Hiện Đại Ma Pháp
+                            </option>
+                            <option value="Hắc Ám Huyễn Tưởng">
+                                Hắc Ám Huyễn Tưởng
+                            </option>
+                            <option value="Lịch Sử Thần Thoại">
+                                Lịch Sử Thần Thoại
+                            </option>
+                            <option value="Võ Hiệp Huyễn Tưởng">
+                                Võ Hiệp Huyễn Tưởng
+                            </option>
+                            <option value="Cổ Võ Tương Lai">
+                                Cổ Võ Tương Lai
+                            </option>
+                            <option value="Tu Chân Văn Minh">
+                                Tu Chân Văn Minh
+                            </option>
+                            <option value="Huyễn Tưởng Tu Tiên">
+                                Huyễn Tưởng Tu Tiên
+                            </option>
+                            <option value="Hiện Đại Tu Chân">
+                                Hiện Đại Tu Chân
+                            </option>
+                            <option value="Thần Thoại Tu Chân">
+                                Thần Thoại Tu Chân
+                            </option>
+                            <option value="Cổ Điển Tiên Hiệp">
+                                Cổ Điển Tiên Hiệp
+                            </option>
+                            <option value="Viễn Cổ Hồng Hoang">
+                                Viễn Cổ Hồng Hoang
+                            </option>
+                            <option value="Đô Thị Sinh Hoạt">
+                                Đô Thị Sinh Hoạt
+                            </option>
+                            <option value="Đô Thị Dị Năng">
+                                Đô Thị Dị Năng
+                            </option>
+                            <option value="Thanh Xuân Vườn Trường">
+                                Thanh Xuân Vườn Trường
+                            </option>
+                            <option value="Ngu Nhạc Minh Tinh">
+                                Ngu Nhạc Minh Tinh
+                            </option>
+                            <option value="Thương Chiến Chức Tràng">
+                                Thương Chiến Chức Tràng
+                            </option>
+                            <option value="Giá Không Lịch Sử">
+                                Giá Không Lịch Sử
+                            </option>
+                            <option value="Lịch Sử Quân Sự">
+                                Lịch Sử Quân Sự
+                            </option>
+                            <option value="Dân Gian Truyền Thuyết">
+                                Dân Gian Truyền Thuyết
+                            </option>
+                            <option value="Lịch Sử Quan Trường">
+                                Lịch Sử Quan Trường
+                            </option>
+                            <option value="Hư Nghĩ Võng Du">
+                                Hư Nghĩ Võng Du
+                            </option>
                             <option value="Du Hí Dị Giới">Du Hí Dị Giới</option>
-                            <option value="Điện Tử Cạnh Kỹ">Điện Tử Cạnh Kỹ</option>
-                            <option value="Thể Dục Cạnh Kỹ">Thể Dục Cạnh Kỹ</option>
+                            <option value="Điện Tử Cạnh Kỹ">
+                                Điện Tử Cạnh Kỹ
+                            </option>
+                            <option value="Thể Dục Cạnh Kỹ">
+                                Thể Dục Cạnh Kỹ
+                            </option>
                             <option value="Cổ Võ Cơ Giáp">Cổ Võ Cơ Giáp</option>
-                            <option value="Thế Giới Tương Lai">Thế Giới Tương Lai</option>
-                            <option value="Tinh Tế Văn Minh">Tinh Tế Văn Minh</option>
-                            <option value="Tiến Hóa Biến Dị">Tiến Hóa Biến Dị</option>
-                            <option value="Mạt Thế Nguy Cơ">Mạt Thế Nguy Cơ</option>
-                            <option value="Thời Không Xuyên Toa">Thời Không Xuyên Toa</option>
-                            <option value="Quỷ Bí Huyền Nghi">Quỷ Bí Huyền Nghi</option>
-                            <option value="Kỳ Diệu Thế Giới">Kỳ Diệu Thế Giới</option>
-                            <option value="Trinh Tham Thôi Lý">Trinh Tham Thôi Lý</option>
-                            <option value="Thám Hiểm Sinh Tồn">Thám Hiểm Sinh Tồn</option>
-                            <option value="Cung Vi Trạch Đấu">Cung Vi Trạch Đấu</option>
-                            <option value="Kinh Thương Chủng Điền">Kinh Thương Chủng Điền</option>
-                            <option value="Tiên Lữ Kỳ Duyên">Tiên Lữ Kỳ Duyên</option>
-                            <option value="Hào Môn Thế Gia">Hào Môn Thế Gia</option>
-                            <option value="Dị Tộc Luyến Tình">Dị Tộc Luyến Tình</option>
-                            <option value="Ma Pháp Huyễn Tình">Ma Pháp Huyễn Tình</option>
-                            <option value="Tinh Tế Luyến Ca">Tinh Tế Luyến Ca</option>
-                            <option value="Linh Khí Khôi Phục">Linh Khí Khôi Phục</option>
-                            <option value="Chư Thiên Vạn Giới">Chư Thiên Vạn Giới</option>
+                            <option value="Thế Giới Tương Lai">
+                                Thế Giới Tương Lai
+                            </option>
+                            <option value="Tinh Tế Văn Minh">
+                                Tinh Tế Văn Minh
+                            </option>
+                            <option value="Tiến Hóa Biến Dị">
+                                Tiến Hóa Biến Dị
+                            </option>
+                            <option value="Mạt Thế Nguy Cơ">
+                                Mạt Thế Nguy Cơ
+                            </option>
+                            <option value="Thời Không Xuyên Toa">
+                                Thời Không Xuyên Toa
+                            </option>
+                            <option value="Quỷ Bí Huyền Nghi">
+                                Quỷ Bí Huyền Nghi
+                            </option>
+                            <option value="Kỳ Diệu Thế Giới">
+                                Kỳ Diệu Thế Giới
+                            </option>
+                            <option value="Trinh Tham Thôi Lý">
+                                Trinh Tham Thôi Lý
+                            </option>
+                            <option value="Thám Hiểm Sinh Tồn">
+                                Thám Hiểm Sinh Tồn
+                            </option>
+                            <option value="Cung Vi Trạch Đấu">
+                                Cung Vi Trạch Đấu
+                            </option>
+                            <option value="Kinh Thương Chủng Điền">
+                                Kinh Thương Chủng Điền
+                            </option>
+                            <option value="Tiên Lữ Kỳ Duyên">
+                                Tiên Lữ Kỳ Duyên
+                            </option>
+                            <option value="Hào Môn Thế Gia">
+                                Hào Môn Thế Gia
+                            </option>
+                            <option value="Dị Tộc Luyến Tình">
+                                Dị Tộc Luyến Tình
+                            </option>
+                            <option value="Ma Pháp Huyễn Tình">
+                                Ma Pháp Huyễn Tình
+                            </option>
+                            <option value="Tinh Tế Luyến Ca">
+                                Tinh Tế Luyến Ca
+                            </option>
+                            <option value="Linh Khí Khôi Phục">
+                                Linh Khí Khôi Phục
+                            </option>
+                            <option value="Chư Thiên Vạn Giới">
+                                Chư Thiên Vạn Giới
+                            </option>
                         </select>
                     </div>
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Lưu phái</label>
-                        <select className={cx("form-input")} name="classify" value={dataForm.classify} onChange={eventOnChangeValueForm}>
+                        <select
+                            className={cx("form-input")}
+                            name="classify"
+                            value={dataForm.classify}
+                            onChange={eventOnChangeValueForm}
+                        >
                             <option value="Hệ Thống">Hệ Thống</option>
                             <option value="Lão Gia">Lão Gia</option>
                             <option value="Bàn Thờ">Bàn Thờ</option>
@@ -175,16 +396,25 @@ const ContentFormNewBook = () => {
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Thị giác</label>
-                        <select className={cx("form-input")} name="viewFrame" value={dataForm.viewFrame} onChange={eventOnChangeValueForm}>
+                        <select
+                            className={cx("form-input")}
+                            name="viewFrame"
+                            value={dataForm.viewFrame}
+                            onChange={eventOnChangeValueForm}
+                        >
                             <option value="Góc Nhìn Nam">Góc Nhìn Nam</option>
                             <option value="Góc Nhìn Nữ">Góc Nhìn Nữ</option>
                             <option value="Ngôi Thứ Nhất">Ngôi Thứ Nhất</option>
                         </select>
                     </div>
 
-
-                    <div className={cx("group-button")}>
-                        <button className={cx("button-create-book")}>Thêm truyện</button>
+                    <div
+                        className={cx("group-button")}
+                        onClick={eventSubmitFormCreateBookNew}
+                    >
+                        <button className={cx("button-create-book")}>
+                            Thêm truyện {loadingCreateBook && " - loading"}
+                        </button>
                     </div>
                 </div>
             </div>

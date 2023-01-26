@@ -9,8 +9,6 @@ const CreatorBook = () => {
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
 
-    console.log(router.pathname)
-
     return (
         <>
             <Head>

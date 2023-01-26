@@ -172,3 +172,21 @@ button {
         font-style: normal;
     }
 }
+
+.customize-quill-new-book {
+    height: 300px;
+    
+    .ql-container {
+        overflow: hidden;
+        border-radius: 6px;
+        background-color: #ffff;
+    }
+    p {
+        font-size: 15px;
+    }
+
+    .ql-editor.ql-blank::before {
+        font-size: 15px;
+        font-style: normal;
+    }
+}

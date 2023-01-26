@@ -1,15 +1,13 @@
 // import { Request } from "express"
 import { User } from "../entities/User";
 import { Book } from "../entities/Book";
+import { AppDataSource } from "../utils/data-source";
+
+
+const postRepository = AppDataSource.getRepository(Book);
 
 export const createBookHandle = async (input: Partial<Book>, user: User) => {
-    const book: any = new Book();
-    book.title = input.title;
-    book.content = input.content;
-    book.thumbnail = input.thumbnail;
-    book.user = user;
-
-    return await book.save(book);
+    return await postRepository.save(postRepository.create({ ...input, user }));
 };
 
 export const getAllBooksHandle = async () => {

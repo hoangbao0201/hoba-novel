@@ -2,6 +2,7 @@
 
 .head {
     display: flex;
+    margin-bottom: 30px;
 }
 
 .thumbnail {
@@ -12,5 +13,113 @@
         object-fit: cover;
         display: none;
         display: block;
+    }
+}
+
+// Detail
+
+.detail {
+    margin-left: 20px;
+}
+
+.grid-name {
+    margin-bottom: 20px;
+
+    .title {
+        font-size: 23px;
+        font-weight: 600;
+    }
+}
+
+.category {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    margin-bottom: 20px;
+    
+    .item {
+        font-size: 15px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        border: 1px solid #ccc;
+    }
+}
+
+// Detail number
+
+.grid-number {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    .detail-number {
+        text-align: center;
+        margin-right: 30px;
+
+        font-size: 15px;
+
+        &>div {
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+}
+
+// Button action
+
+.grid-button {
+
+    .button-action {
+        padding: 10px 20px;
+        font-size: 17px;
+        font-weight: 600;
+        border-radius: 999px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    // Button 
+    .reading {
+        color: #ffff;
+        border-color: #bf2c24;
+        background-color: #bf2c24;
+    }
+    .bookmark {
+        color: #666;
+        border-color: #666;
+        background-color: transparent;
+    }
+    .suggest-book {
+        color: #b78a28;
+        border-color: #cc9e14;
+        background-color: #f7f5f0;
+    }
+}
+
+// Content
+
+.page-content {
+    // margin-top: 30px;
+}
+
+.button-tab {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: transparent;
+
+    .item {
+        color: #333;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    &.active {
+        color: #b78a28 !important;
+        border-bottom: 4px solid #b78a28 !important;
     }
 }

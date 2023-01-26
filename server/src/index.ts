@@ -7,6 +7,7 @@ import { AppDataSource } from "./utils/data-source";
 import authRouter from "./routes/auth.routes";
 import bookRouter from "./routes/book.routes";
 import userRouter from "./routes/user.routes";
+import imageRouter from "./routes/image.routes";
 
 import cors from "cors";
 
@@ -34,6 +35,7 @@ const main = async () => {
     app.use("/api/auth", authRouter);
     app.use("/api/books", bookRouter);
     app.use("/api/users", userRouter);
+    app.use("/api/images", imageRouter);
 
     app.listen(PORT, () => {
         console.log(`Server started on port ${PORT}`);
