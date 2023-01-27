@@ -1,12 +1,13 @@
 import { useState } from "react";
 import classNames from "classnames/bind";
+import styles from "./FormCreatorBook.module.scss";
 const cx = classNames.bind(styles);
 
 import Sidebar from "./Sidebar";
 import { iconBars } from "public/icons";
 import ContentFormDraftsNew from "./ContentFormDraftsNew";
-import styles from "./FormCreatorBook.module.scss";
 import ContentFormNewBook from "./ContentFormNewBook";
+import ContentFormMyBooks from "./ContentFormMyBooks";
 
 export interface FormCreatorBookProps {
     tab?: any;
@@ -74,7 +75,7 @@ function handleToggleContentForm(tab: FormCreatorBookProps) {
                     </div>
 
                     <div className={cx("content-form")}>
-                        <p>Tính năng đang cập nhật</p>
+                        <ContentFormMyBooks />
                     </div>
                 </div>
             );

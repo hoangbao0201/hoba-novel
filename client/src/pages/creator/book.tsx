@@ -5,7 +5,8 @@ import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import FormCreatorBook from "@/components/FormCreatorBook";
 
 export interface CreatorBookProps {}
-const CreatorBook = () => {
+
+const CreatorBook= () => {
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
 
@@ -21,7 +22,10 @@ const CreatorBook = () => {
             </Head>
 
             <main>
-                <FormCreatorBook tab={router.query.tab} route={router.basePath}/>
+                <FormCreatorBook
+                    tab={router.query.tab}
+                    route={router.basePath}
+                />
             </main>
         </>
     );

@@ -8,6 +8,7 @@ export const deserializeUser = async (
     next: NextFunction
 ) => {
     try {
+
         const authHeader = req.headers.authorization;
         const token = authHeader && authHeader.split(" ")[1];
 
@@ -17,6 +18,7 @@ export const deserializeUser = async (
                 success: false,
                 message: "Access token not found",
             });
+            return;
         }
 
         await jwt.verify(
@@ -40,6 +42,7 @@ export const deserializeUser = async (
                         success: false,
                         message: "User not found"
                     })
+                    return;
                 }
 
                 res.locals.user = exitingUser;

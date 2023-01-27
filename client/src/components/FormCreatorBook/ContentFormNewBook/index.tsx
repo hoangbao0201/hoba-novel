@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import classNames from "classnames/bind";
-import styles from "./ContentFormNewBook.module.scss";
 const cx = classNames.bind(styles);
+
+import styles from "./ContentFormNewBook.module.scss";
+import Loading from "@/components/Layouts/Loading";
 
 export interface ContentFormNewBookProps {}
 
@@ -77,7 +79,7 @@ const ContentFormNewBook = () => {
         const image = new FormData();
         image.append("file", dataImageThumbnail);
 
-        const resUploadImage = await axios.post("/api/images/upload-single", image);
+        const resUploadImage = await axios.post("/api/images/upload-single/thumbnail", image);
 
         console.log(resUploadImage.data);
 
@@ -97,14 +99,13 @@ const ContentFormNewBook = () => {
                             className={cx("form-input-thumbnail")}
                             placeholder=""
                             name="thumbnail"
-                            value={dataForm.title}
                             onChange={eventOnchangeImage}
                         />
                         <label htmlFor="inputUploadThumbnail" className={cx("grid-input-image")}>
                             <img src={imageThumbnail} className={cx("image-thumbnail")} />
                         </label>
 
-                        <button className={cx("button-upload-image")} onClick={eventSubmitImage}>Cập nhật ảnh bìa {loadingUploadImage && " - loading..."}</button>
+                        <button className={cx("button-upload-image")} onClick={eventSubmitImage}> {loadingUploadImage && <Loading size="sm"/>} Cập nhật ảnh bìa</button>
 
                         <p className={cx("note-upload-image")}>
                             Lưu ý: file ảnh không nặng quá 2MB. Đừng lo lắng nếu không tìm được ảnh bìa ưng ý, chúng tôi sẽ hỗ trợ làm giúp bạn ảnh bìa đẹp khi truyện được xuất bản

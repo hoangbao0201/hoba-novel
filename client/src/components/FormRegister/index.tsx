@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 import styles from "./FormRegister.module.scss";
 const cx = classNames.bind(styles);
 
+import axios from "axios";
 import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import BreadcrumbLayout from "../Layouts/BreadcrumbLayout";
 import { iconFacebook, iconGithub, iconGoogle } from "public/icons";
@@ -14,6 +15,7 @@ export interface FormRegisterProps {}
 
 const FormRegister = () => {
     const [dataForm, setDataForm] = useState({
+        name: "",
         username: "",
         email: "",
         password: "",
@@ -35,12 +37,21 @@ const FormRegister = () => {
     ) => {
         e.preventDefault();
 
-        // if(response.data?.register.errors) {
-        //     console.log("ERROR: ", response.data?.register.errors)
-        // }
-        // else {
-        //     router.push('/')
-        // }
+        try {
+            const resLoginUser = await axios.post("/api/auth/register", {
+                name: dataForm.name,
+                username: dataForm.username,
+                email: dataForm.email,
+                password: dataForm.password,
+            });
+
+            if(resLoginUser.data.success) {
+                router.push("/auth/login");
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -64,6 +75,22 @@ const FormRegister = () => {
                                     </div>
                                 </div>
 
+                                <div className={cx("form-group")}>
+                                    <label
+                                        htmlFor="input-register-name"
+                                        className={cx("form-title")}
+                                    >
+                                        Họ và tên
+                                    </label>
+                                    <div className={cx("form-input")}>
+                                        <input
+                                            id="input-register-name"
+                                            value={dataForm.name}
+                                            name="name"
+                                            onChange={eventChangeValueInput}
+                                        />
+                                    </div>
+                                </div>
                                 <div className={cx("form-group")}>
                                     <label
                                         htmlFor="input-register-username"

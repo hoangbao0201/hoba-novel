@@ -52,7 +52,8 @@
 }
 
 .note-upload-image {
-    width: 380px;
+    width: 100%;
+    max-width: 380px;
     font-size: 15px;
     color: #b9b9c3;
     text-align: center;

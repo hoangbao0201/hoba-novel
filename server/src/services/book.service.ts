@@ -3,7 +3,6 @@ import { User } from "../entities/User";
 import { Book } from "../entities/Book";
 import { AppDataSource } from "../utils/data-source";
 
-
 const postRepository = AppDataSource.getRepository(Book);
 
 export const createBookHandle = async (input: Partial<Book>, user: User) => {
@@ -31,7 +30,11 @@ export const getAllBooksHandle = async () => {
 //     return await builder.getMany();
 // };
 
-// export const getPostUserHandle = async (user: User) => {
-//     const allPosts = await Book.find({ where: { user } });
-//     return allPosts;
-// };
+export const getMyBooksHandle = async (userId: User) => {
+    const books = await Book
+        .createQueryBuilder("book")
+        .where("book.userId = :id", { id: userId })
+        .getMany();
+
+    return books;
+};

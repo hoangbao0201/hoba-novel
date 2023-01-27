@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import cloudinary from "../utils/cloudinary";
 
 
-export const uploadSingleImage = async (req: Request, res: Response) => {
+export const uploadSingleImageThumbnail = async (req: Request, res: Response) => {
     try {
         const thubnail = await cloudinary.uploader.upload(req.file?.path, {
             public_id: `${Date.now()}`,
