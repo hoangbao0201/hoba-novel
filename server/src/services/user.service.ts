@@ -36,7 +36,7 @@ export const signTokens = async (user: User) => {
     const accessToken = jwt.sign(
         { userId: user.id },
         process.env.SECRET_TOKEN as string,
-        { expiresIn: "15m" }
+        { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(

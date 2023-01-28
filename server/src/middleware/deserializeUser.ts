@@ -13,7 +13,7 @@ export const deserializeUser = async (
         const token = authHeader && authHeader.split(" ")[1];
 
         if (!token) {
-            res.status(400).json({
+            res.json({
                 code: 400,
                 success: false,
                 message: "Access token not found",

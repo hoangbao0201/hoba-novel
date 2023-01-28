@@ -13,6 +13,16 @@
     
 }
 
+.side-header {
+
+    .logo {
+        display: block;
+        font-weight: 600;
+        padding: 10px 15px;
+        transition: all 0.2s ease;
+    }
+}
+
 .side-title {
     font-size: 15px;
     color: #a6a4b0;
@@ -21,7 +31,7 @@
 }
 
 .side-item {
-    color: #625f6e;
+    color: #333;
     border-radius: 4px;
 
     &:hover .link-item {

@@ -80,7 +80,7 @@ const Navbar = () => {
                                     {iconRegister}hoangbao0201
                                 </div>
                             </Link>
-                            <Link href="/creator/book" target="_blank">
+                            <Link href="/creator" target="_blank">
                                 <div className={cx("navbar-item")}>
                                     {iconRegister}Create Book
                                 </div>

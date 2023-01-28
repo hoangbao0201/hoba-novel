@@ -23,8 +23,9 @@ const CreatorBook= () => {
 
             <main>
                 <FormCreatorBook
-                    tab={router.query.tab}
-                    route={router.basePath}
+                    tab="books/issues"
+                    title="Báo lỗi"
+                    description="Dù báo lỗi đúng hay sai nhớ đều phải trả lời để BTV có thể đóng báo lỗi"
                 />
             </main>
         </>

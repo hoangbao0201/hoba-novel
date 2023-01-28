@@ -17,35 +17,40 @@ import { getMyBooks } from "@/redux/bookSlice";
 
 const cx = classNames.bind(styles);
 
-export interface ContentFormMyBooksProps {}
+export interface ContentFormMyBooksProps {
+    books?: any
+}
 
-const ContentFormMyBooks = () => {
-    const { bookLoading, booksUser } = useSelector((state: any) => state.book);
-    const dispatch = useDispatch();
+const ContentFormMyBooks = ({ books } : ContentFormMyBooksProps) => {
 
-    const eventGetMyBooks = async () => {
-        const resMyBooks = await axios.get("/api/books/my-books");
+    // console.log(books)
 
-        if (resMyBooks.data.success) {
-            dispatch(getMyBooks(resMyBooks.data.books));
-        }
+    // const { bookLoading, booksUser } = useSelector((state: any) => state.book);
+    // const dispatch = useDispatch();
 
-    };
+    // const eventGetMyBooks = async () => {
+    //     const resMyBooks = await axios.get("/api/books/my-books");
 
-    useEffect(() => {
-        eventGetMyBooks();
-    }, []);
+    //     if (resMyBooks.data.success) {
+    //         dispatch(getMyBooks(resMyBooks.data.books));
+    //     }
 
-    if (bookLoading) {
+    // };
+
+    // useEffect(() => {
+    //     eventGetMyBooks();
+    // }, []);
+
+    // if (bookLoading) {
+    //     return null;
+    // } else if (!booksUser) { 
         return null;
-    } else if (!booksUser) {
-        return null;
-    }
+    // }
 
     return (
         <div className={cx("wrapper")}>
             <div className={cx("content")}>
-                {booksUser.map((book: any) => {
+                {books.map((book: any) => {
                     return (
                         <div key={book.id} className={cx("card")}>
                             <div className={cx("container")}>

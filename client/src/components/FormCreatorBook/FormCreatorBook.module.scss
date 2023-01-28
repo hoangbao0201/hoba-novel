@@ -20,10 +20,53 @@
     border-bottom: 1px solid #ebe9f1;
     position: fixed;
     background-color: #f8f8f8;
-
+    
+    
     .container {
         padding: 15px 30px;
         transition: 0.2s all ease;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+// Accout
+
+.content-accout {
+    position: relative;
+    height: 100%;
+}
+
+.accout-user {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}   
+
+.avatar {
+
+    .image {
+        width: 35px;
+        height: 35px;
+        object-fit: cover;
+        display: block;
+        // border-radius: 50%;
+    }
+}
+
+.info-detail {
+    text-align: right;
+    margin-right: 10px;
+    .username {
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .email {
+        font-size: 14px;
+        font-weight: 500;
     }
 }
 
@@ -128,5 +171,14 @@
 @media (max-width: 576px) {
     .content {
         padding: 90px 15px 65px 15px;
+    }
+    .header {
+        .container {
+            padding: 15px 15px;
+
+            .info-detail {
+                display: none;
+            }
+        }
     }
 }
