@@ -1,21 +1,21 @@
 import Head from "next/head";
-import { NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage, NextPageContext } from "next";
 import { useRouter } from "next/router";
-import axios from "axios";
 
 import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import FormCreatorBook from "@/components/FormCreatorBook";
 import ContentFormMyBooks from "@/components/FormCreatorBook/ContentFormMyBooks";
+import { getBook, getMyBooks } from "@/lib/api";
 
 export interface CreatorBooksProps {
-    books?: any
+    books?: any;
 }
 
-const CreatorBooks : NextPage<CreatorBooksProps> = ({ books }) => {
+const CreatorBooks: NextPage<CreatorBooksProps> = ({ books }) => {
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
 
-    console.log(books)
+    console.log("BOOKS: ", books);
 
     return (
         <>
@@ -34,24 +34,30 @@ const CreatorBooks : NextPage<CreatorBooksProps> = ({ books }) => {
                     title="Truyện của tôi"
                     description="Danh sách các truyện bạn đã đăng"
                 >
-                    {/* {books ? <ContentFormMyBooks books={books} /> : <p>Bạn chưa đăng tải truyện nào</p>} */}
+                    {books ? <ContentFormMyBooks books={books} /> : <p>Bạn chưa đăng tải truyện nào</p>}
                 </FormCreatorBook>
             </main>
         </>
     );
 };
 
-export async function getServerSideProps({ context } : any) {
+export const getServerSideProps : GetServerSideProps<CreatorBooksProps> = async (context) => {
+    const token = context.req?.headers.cookie?.split("A_token=")[1];
+    const books = await getMyBooks(token as string);
 
-    console.log(context)
-
-    const resMyBooks = await axios.get('/api/books');
-
-    return {
-        props: {
-            books: resMyBooks.data.books || null
-        },
+    if (books.data.success) {
+        return {
+            props: {
+                books: books.data.books
+            }
+        };
+    } else {
+        return {
+            props: {
+                books: null
+            }
+        };
     }
-}
+};
 
 export default CreatorBooks;

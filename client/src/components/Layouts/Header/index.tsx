@@ -36,7 +36,7 @@ const Header = () => {
                 <div className={cx("content-item")}>
                     <Navbar />
                     <Link className={cx("logo")} href="/">
-                        Logo
+                        HOBA NOVEL
                     </Link>
                 </div>
 

@@ -35,10 +35,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    gap: 10px;
 
     margin-bottom: 20px;
     
     .item {
+        display: inline-block;
         font-size: 15px;
         padding: 5px 12px;
         border-radius: 999px;
@@ -71,6 +73,10 @@
 // Button action
 
 .grid-button {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 
     .button-action {
         padding: 10px 20px;
@@ -115,11 +121,15 @@
     .item {
         color: #333;
         font-weight: 500;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     &.active {
         color: #b78a28 !important;
         border-bottom: 4px solid #b78a28 !important;
+
+        .item {
+            font-weight: 600;
+        }
     }
 }

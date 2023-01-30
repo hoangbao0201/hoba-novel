@@ -1,14 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import styles from "./ContentFormNewBook.module.scss";
+import styles from "./ContentFormEditBook.module.scss";
+import Loading from "@/components/Layouts/Loading";
 
 const cx = classNames.bind(styles);
 
-export interface ContentFormNewBookProps {}
+export interface ContentFormEditBookProps {
+    book?: any
+}
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
     ssr: false,
@@ -19,18 +22,23 @@ const modules = {
     toolbar: null,
 };
 
-const ContentFormNewBook = () => {
+const ContentFormEditBook = ({ book } : ContentFormEditBookProps) => {
+    const [imageThumbnail, setImageThumbnail] = useState(book.image?.url || "/images/book-default.png")
+    const [dataImageThumbnail, setDataImageThumbnail] = useState<any>("");
     const [loadingCreateBook, setLoadingCreateBook] = useState<boolean>(false);
+    const [loadingUploadImage, setLoadingUploadImage] = useState<boolean>(false);
     const [dataForm, setDataForm] = useState({
-        title: "",
-        author: "",
-        description: "",
-        category: "Tiên Hiệp",
-        personality: "Điềm Đạm",
-        scene: "Đông Phương Huyền Huyễn",
-        classify: "Hệ Thống",
-        viewFrame: "Góc Nhìn Nam",
+        title: book.title || "",
+        author: book.author ||  "",
+        description: book.description || "",
+        category: book.category || "Tiên Hiệp",
+        personality: book.personality || "Điềm Đạm",
+        scene: book.scene || "Đông Phương Huyền Huyễn",
+        classify: book.classify || "Hệ Thống",
+        viewFrame: book.viewFrame || "Góc Nhìn Nam",
     });
+
+    console.log(book)
 
     // Text description
     const eventOnChangeTextContent = (value: any) => {
@@ -39,6 +47,13 @@ const ContentFormNewBook = () => {
             description: value,
         });
     };
+
+    // Image
+    const eventOnchangeImage = async (e : any) => {
+        const fileImage = e.target.files[0];
+        setImageThumbnail(URL.createObjectURL(fileImage));
+        setDataImageThumbnail(fileImage);
+    }
 
     // Value Form
     const eventOnChangeValueForm = (e: any) => {
@@ -59,13 +74,53 @@ const ContentFormNewBook = () => {
         console.log(resCreateBook.data);
 
         setLoadingCreateBook(false);
+    };
 
+    // Update image
+    const eventSubmitImage = async () => {
+
+        // Loading
+        setLoadingUploadImage(true);
+
+        const image = new FormData();
+        image.append("file", dataImageThumbnail);
+
+        const resUploadImage = await axios.post(`/api/books/upload-thumbnail/${book.id}`, image);
+
+        console.log(resUploadImage.data)
+
+        // if(resUploadImage.data.success) {
+        // }
+        
+
+        setLoadingUploadImage(false);
     };
 
     return (
         <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 <div className={cx("form")}>
+                    <div className={cx("form-group", "grid-form-upload-image")}>
+
+                        <input
+                            id="inputUploadThumbnail"
+                            type="file"
+                            className={cx("form-input-thumbnail")}
+                            placeholder=""
+                            name="thumbnail"
+                            onChange={eventOnchangeImage}
+                        />
+                        <label htmlFor="inputUploadThumbnail" className={cx("grid-input-image")}>
+                            <img src={imageThumbnail} className={cx("image-thumbnail")} />
+                        </label>
+
+                        <button className={cx("button-upload-image")} onClick={eventSubmitImage}> {loadingUploadImage && <Loading size="sm"/>} Cập nhật ảnh bìa</button>
+
+                        <p className={cx("note-upload-image")}>
+                            Lưu ý: file ảnh không nặng quá 2MB. Đừng lo lắng nếu không tìm được ảnh bìa ưng ý, chúng tôi sẽ hỗ trợ làm giúp bạn ảnh bìa đẹp khi truyện được xuất bản
+                        </p>
+
+                    </div>
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Tên truyện</label>
@@ -93,14 +148,15 @@ const ContentFormNewBook = () => {
 
                     <div className={cx("form-group")}>
                         <label className={cx("form-title")}>Giới thiệu</label>
-                        {/* <textarea className={cx("form-text")} placeholder="" name="description" value={dataForm.description} onChange={eventOnChangeValueForm}/> */}
 
                         <QuillNoSSRWrapper
                             modules={modules}
+                            value={dataForm.description}
                             placeholder="Nếu để tên chương nằm ở dòng đầu tiên, hệ thống sẽ tự tách tên chương cho bạn"
-                            className="customize-quill-new-book"
+                            className="customize-quill-edit-book"
                             onChange={eventOnChangeTextContent}
                         />
+
                     </div>
 
                     <div className={cx("form-group")}>
@@ -368,7 +424,7 @@ const ContentFormNewBook = () => {
                         onClick={eventSubmitFormCreateBookNew}
                     >
                         <button className={cx("button-create-book")}>
-                            Cập nhật {loadingCreateBook && " - loading"}
+                            Thêm truyện {loadingCreateBook && " - loading"}
                         </button>
                     </div>
                 </div>
@@ -377,4 +433,4 @@ const ContentFormNewBook = () => {
     );
 };
 
-export default ContentFormNewBook;
+export default ContentFormEditBook;

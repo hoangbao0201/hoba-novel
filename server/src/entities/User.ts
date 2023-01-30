@@ -4,10 +4,12 @@ import {
     CreateDateColumn,
     Entity,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
 import { Book } from "./Book";
+import { Image } from "./Image";
 
 @Entity()
 export class User extends BaseEntity {
@@ -29,6 +31,10 @@ export class User extends BaseEntity {
     // Books
     @OneToMany(() => Book, book => book.user)
     books: Book[];
+
+    // Image
+    @OneToOne(() => Image, image => image.user)
+    image: Image;
 
     @CreateDateColumn()
     createAt: Date;

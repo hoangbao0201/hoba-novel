@@ -44,7 +44,7 @@ const ContentFormMyBooks = ({ books } : ContentFormMyBooksProps) => {
     // if (bookLoading) {
     //     return null;
     // } else if (!booksUser) { 
-        return null;
+        // return null;
     // }
 
     return (
@@ -87,7 +87,7 @@ const ContentFormMyBooks = ({ books } : ContentFormMyBooksProps) => {
                                         <Link href="#" className={cx("button")}>
                                             {iconUpload}
                                         </Link>
-                                        <Link href="#" className={cx("button")}>
+                                        <Link href={`/creator/books/edit/${book.id}`} className={cx("button")}>
                                             {iconPenToSquare}
                                         </Link>
                                         <Link href="#" className={cx("button")}>

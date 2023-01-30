@@ -5,9 +5,11 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
+import { Image } from "./Image";
 import { User } from "./User";
 
 @Entity()
@@ -17,6 +19,9 @@ export class Book extends BaseEntity {
 
     @Column({ unique: true })
     title: string;
+
+    @Column({ unique: true })
+    link: string
 
     @Column({ unique: true })
     author: string
@@ -39,8 +44,9 @@ export class Book extends BaseEntity {
     @Column()
     viewFrame: string
 
-    @Column({ default: "default-book.png", })
-    thumbnail: string;
+    // Image
+    @OneToOne(() => Image, image => image.book)
+    image: Image;
 
     // User
     @ManyToOne(() => User, user => user.books)
@@ -53,3 +59,4 @@ export class Book extends BaseEntity {
     @UpdateDateColumn()
     updateAt: Date;
 }
+

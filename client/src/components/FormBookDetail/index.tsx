@@ -3,35 +3,36 @@ import styles from "./FormBookDetail.module.scss";
 
 import ContentWrapper from "../Layouts/ContentWrapper";
 import FormDesciption from "./FormDescription";
+import { NextPage } from "next";
 
 const cx = classNames.bind(styles);
 
-export interface FormBookDetailProps {}
-const FormBookDetail = () => {
+export interface FormBookDetailProps {
+    book?: any
+}
+const FormBookDetail : NextPage<FormBookDetailProps> = ({ book }) => {
     return (
         <ContentWrapper>
             <div className={cx("head")}>
                 <div className={cx("thumbnail")}>
                     <img
                         className={cx("image")}
-                        src="https://static.cdnno.com/poster/quang-am-chi-ngoai/300.jpg?1655013821"
+                        src={book.image.url || "/images/book-default.png"}
                     />
                 </div>
                 <div className={cx("detail")}>
                     <div className={cx("grid-name")}>
                         <h2 className={cx("title")}>
-                            Vừa Thành Tiên Thần Con Cháu Cầu Ta Xuất Sơn
+                            {book.title}
                         </h2>
                     </div>
                     <div className={cx("category")}>
-                        <div className={cx("item")}>Nhâm Ngã Tiếu</div>
-                        <div className={cx("item")}>Tiên Hiệp</div>
-                        <div className={cx("item")}>Điền Đạm</div>
-                        <div className={cx("item")}>
-                            Đông Phương Huyền Huyễn
-                        </div>
-                        <div className={cx("item")}>Vô Địch</div>
-                        <div className={cx("item")}>Góc Nhìn Nam</div>
+                        <div className={cx("item")}>{book.author}</div>
+                        <div className={cx("item")}>{book.category}</div>
+                        <div className={cx("item")}>{book.personality}</div>
+                        <div className={cx("item")}>{book.scene}</div>
+                        <div className={cx("item")}>{book.classify}</div>
+                        <div className={cx("item")}>{book.viewFrame}</div>
                     </div>
 
                     <div className={cx("grid-number")}>
@@ -95,7 +96,7 @@ const FormBookDetail = () => {
                         </button>
                     </div>
                     <div className={cx("tab-content")}>
-                        <FormDesciption />
+                        <FormDesciption description={book.description} />
                     </div>
                 </div>
             </div>

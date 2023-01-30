@@ -4,12 +4,18 @@ import { useRouter } from "next/router";
 import useBreadcrumbs from "@/hooks/useBreadcrumbs";
 import GlobalStyles from "@/components/GlobalStyles";
 import FormBookDetail from "@/components/FormBookDetail";
+import { GetServerSideProps, NextPage } from "next";
+import { getBookByLink } from "@/lib/api";
 
-export interface BookDetailProps {}
+export interface BookDetailProps {
+    book?: any
+}
 
-const BookDetail = () => {
+const BookDetail : NextPage<BookDetailProps> = ({ book }) => {
     const router = useRouter();
     const newRouter = useBreadcrumbs(router);
+
+    console.log(book)
 
     return (
         <>
@@ -24,11 +30,23 @@ const BookDetail = () => {
 
             <main>
                 <GlobalStyles>
-                    <FormBookDetail />
+                    {book ? <FormBookDetail book={book}/> : <p>Sách lỗi</p>}
                 </GlobalStyles>
             </main>
         </>
     );
 };
+
+export const getServerSideProps : GetServerSideProps = async (context) => {
+
+    const book = await getBookByLink(context.query.link);
+
+    return {
+        props: {
+            book: book.data.book || null
+        }
+    }
+
+}
 
 export default BookDetail;

@@ -1,11 +1,18 @@
 import Head from "next/head";
 
 import GlobalStyles from "@/components/GlobalStyles";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import FormHome from "@/components/FormHome";
+import { GetServerSideProps, NextPage } from "next";
+import { getBooksByPage } from "@/lib/api";
 
-export default function Home() {
-    const { currentUser } = useSelector((state: any) => state.user);
+interface HomeProps {
+    books?: any
+}
+
+const Home : NextPage<HomeProps> = ({ books }) => {
+    // const { currentUser } = useSelector((state: any) => state.user);
+
 
     return (
         <>
@@ -23,9 +30,23 @@ export default function Home() {
             </Head>
             <main>
                 <GlobalStyles>
-                    <FormHome />
+                    <FormHome books={books}/>
                 </GlobalStyles>
             </main>
         </>
     );
 }
+
+export const getServerSideProps : GetServerSideProps = async (context) => {
+
+    const books = await getBooksByPage(context.query.page);
+
+    return {
+        props: {
+            books: books.data.books || null
+        }
+    }
+
+}
+
+export default Home;
